@@ -1,0 +1,33 @@
+#!env perl
+use strict;
+use warnings;
+use Prima qw(Application);
+
+my $sleep = 20 * 60;
+my $tick  = 20;
+while ( 1 ) {
+	sleep($sleep);
+	my $t;
+	my $sec = $tick;
+	$t = Prima::Widget->new(
+		size   => [100, 100],
+		origin => [ 0, $::application-> height - 100 ],
+		font   => { height => 80 },
+		onPaint => sub {
+			$t->clear;
+			$t->draw_text($sec, 0, 0, $t->size, dt::Center|dt::VCenter);
+		},
+		onMouseDown => sub {
+			$t-> destroy;
+			$sec = 0;
+		},
+	);
+	$t-> insert( Timer => 
+		timeout => 1000,
+		onTick  => sub {
+			$sec-- ? $t->repaint : $t->destroy;
+		},
+	)->start;
+
+	$::application->yield while $sec > 0;
+}
