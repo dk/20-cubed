@@ -1,10 +1,23 @@
 #!env perl
 use strict;
 use warnings;
-use Prima qw(Application);
+use Prima qw(Classes Application);
 
 my $sleep = 20 * 60;
 my $tick  = 20;
+
+my $dbm = Prima::Image->new(
+	width  => 100,
+	height => 100,
+	monochrome => 1,
+	color => cl::White,
+	backColor => cl::Black,
+);
+$dbm->begin_paint;
+$dbm->clear;
+$dbm->fill_ellipse( 50, 50, 100, 100 );
+$dbm->end_paint;
+
 while ( 1 ) {
 	sleep($sleep);
 	my $t;
@@ -13,8 +26,10 @@ while ( 1 ) {
 		size   => [100, 100],
 		origin => [ 0, $::application-> height - 100 ],
 		font   => { height => 80 },
+		shape  => $dbm,
 		onPaint => sub {
-			$t->clear;
+			$t->gradient_bar( 0, 0, $t->size, { palette => [ cl::Gray, cl::White ] });
+			$t->color(cl::Black);
 			$t->draw_text($sec, 0, 0, $t->size, dt::Center|dt::VCenter);
 		},
 		onMouseDown => sub {
