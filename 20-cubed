@@ -19,7 +19,6 @@ $dbm->fill_ellipse( 50, 50, 100, 100 );
 $dbm->end_paint;
 
 while ( 1 ) {
-	sleep($sleep);
 	my $t;
 	my $sec = $tick;
 	$t = Prima::Widget->new(
@@ -45,4 +44,5 @@ while ( 1 ) {
 	)->start;
 
 	$::application->yield while $sec > 0;
+	sleep($sleep);
 }
