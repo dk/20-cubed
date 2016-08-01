@@ -9,14 +9,34 @@ my $tick  = 20;
 my $dbm = Prima::Image->new(
 	width  => 100,
 	height => 100,
-	monochrome => 1,
 	color => cl::White,
 	backColor => cl::Black,
+	type=> im::BW,
 );
 $dbm->begin_paint;
 $dbm->clear;
 $dbm->fill_ellipse( 50, 50, 100, 100 );
 $dbm->end_paint;
+
+my $gradient_mask = Prima::Image->new(
+	width  => 100,
+	height => 100,
+	backColor => cl::Black,
+);
+$gradient_mask->begin_paint;
+$gradient_mask->clear;
+$gradient_mask->gradient_ellipse( 50, 50, 100, 100, { palette => [ cl::Black, cl::White ], poly => [0.2, 0.8, 0.3, 1] });
+$gradient_mask->end_paint;
+$gradient_mask->type(im::Byte);
+
+my $gradient = $dbm->dup;
+$gradient->type(im::RGB);
+$gradient->begin_paint;
+$gradient->gradient_bar( 0, 0, $gradient->size, { palette => [ cl::Gray, cl::White ] });
+$gradient->end_paint;
+
+my $gradient_shape = Prima::Icon->create_combined( $gradient, $gradient_mask );
+$gradient_shape->premultiply_alpha;
 
 while ( 1 ) {
 	my $t;
@@ -26,8 +46,10 @@ while ( 1 ) {
 		origin => [ 0, $::application-> height - 100 ],
 		font   => { height => 80 },
 		shape  => $dbm,
+		layered => 1,
 		onPaint => sub {
-			$t->gradient_bar( 0, 0, $t->size, { palette => [ cl::Gray, cl::White ] });
+			$t->clear;
+			$t->stretch_image( 0, 0, $t-> size, $gradient_shape, rop::SrcCopy );
 			$t->color(cl::Black);
 			$t->draw_text($sec, 0, 0, $t->size, dt::Center|dt::VCenter);
 		},
