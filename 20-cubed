@@ -34,9 +34,7 @@ $gradient->type(im::RGB);
 $gradient->begin_paint;
 $gradient->gradient_bar( 0, 0, $gradient->size, { palette => [ cl::Gray, cl::White ] });
 $gradient->end_paint;
-
-my $gradient_shape = Prima::Icon->create_combined( $gradient, $gradient_mask );
-$gradient_shape->premultiply_alpha;
+$gradient->premultiply_alpha( $gradient_mask );
 
 while ( 1 ) {
 	my $t;
@@ -49,9 +47,10 @@ while ( 1 ) {
 		layered => 1,
 		onPaint => sub {
 			$t->clear;
-			$t->stretch_image( 0, 0, $t-> size, $gradient_shape, rop::SrcCopy );
+			$t->stretch_image( 0, 0, $t-> size, $gradient);
 			$t->color(cl::Black);
 			$t->draw_text($sec, 0, 0, $t->size, dt::Center|dt::VCenter);
+			$t->stretch_image( 0, 0, $t-> size, $gradient_mask, rop::AlphaCopy );
 		},
 		onMouseDown => sub {
 			$t-> destroy;
