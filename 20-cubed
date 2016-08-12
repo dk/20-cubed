@@ -47,10 +47,10 @@ while ( 1 ) {
 		layered => 1,
 		onPaint => sub {
 			$t->clear;
-			$t->stretch_image( 0, 0, $t-> size, $gradient);
+			$t->put_image( 0, 0, $gradient);
 			$t->color(cl::Black);
 			$t->draw_text($sec, 0, 0, $t->size, dt::Center|dt::VCenter);
-			$t->stretch_image( 0, 0, $t-> size, $gradient_mask, rop::AlphaCopy );
+			$t->put_image( 0, 0, $gradient_mask, rop::AlphaCopy );
 		},
 		onMouseDown => sub {
 			$t-> destroy;
