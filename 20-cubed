@@ -67,3 +67,21 @@ while ( 1 ) {
 	$::application->yield while $sec > 0;
 	sleep($sleep);
 }
+
+__DATA__
+
+=pod
+
+=head1 NAME
+
+20 cubed
+
+=head1 DESCRIPTION
+
+This is a desktop version of chrome extension "20 cubed". When started, it will
+remind you every 20 minutes to take 20 second break from your screen, looking
+at an object 20 metres away.
+
+=head1 AUTHOR
+
+Dmitry Karasik
