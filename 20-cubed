@@ -46,9 +46,7 @@ while ( 1 ) {
 		shape  => $dbm,
 		layered => 1,
 		onPaint => sub {
-			$t->clear;
 			$t->put_image( 0, 0, $gradient);
-			$t->color(cl::Black);
 			$t->draw_text($sec, 0, 0, $t->size, dt::Center|dt::VCenter);
 			$t->put_image( 0, 0, $gradient_mask, rop::AlphaCopy );
 		},
