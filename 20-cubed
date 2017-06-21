@@ -25,14 +25,14 @@ my $gradient_mask = Prima::Image->new(
 );
 $gradient_mask->begin_paint;
 $gradient_mask->clear;
-$gradient_mask->gradient_ellipse( 50, 50, 100, 100, { palette => [ cl::Black, cl::White ], poly => [0.2, 0.8, 0.3, 1] });
+$gradient_mask->new_gradient( palette => [ cl::Black, cl::White ], poly => [0.2, 0.8, 0.3, 1] )->ellipse(50, 50, 100, 100);
 $gradient_mask->end_paint;
 $gradient_mask->type(im::Byte);
 
 my $gradient = $dbm->dup;
 $gradient->type(im::RGB);
 $gradient->begin_paint;
-$gradient->gradient_bar( 0, 0, $gradient->size, { palette => [ cl::Gray, cl::White ] });
+$gradient->new_gradient( palette => [ cl::Gray, cl::White ] )->bar( 0, 0, $gradient->size );
 $gradient->end_paint;
 $gradient->premultiply_alpha( $gradient_mask );
 
