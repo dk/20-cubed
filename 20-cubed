@@ -62,7 +62,10 @@ while ( 1 ) {
 		},
 	)->start;
 
-	$::application->yield while $sec > 0;
+	while ($sec > 0) {
+		$::application->yield;
+		select(undef,undef,undef,0.1);
+	}
 	sleep($sleep);
 }
 
