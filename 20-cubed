@@ -35,13 +35,14 @@ $gradient->begin_paint;
 $gradient->new_gradient( palette => [ cl::Gray, cl::White ] )->bar( 0, 0, $gradient->size );
 $gradient->end_paint;
 $gradient->premultiply_alpha( $gradient_mask );
+my @origin = (0, $::application-> height - 100);
 
 while ( 1 ) {
 	my $t;
 	my $sec = $tick;
 	$t = Prima::Widget->new(
 		size   => [100, 100],
-		origin => [ 0, $::application-> height - 100 ],
+		origin => \@origin,
 		font   => { height => 80 },
 		shape  => $dbm,
 		layered => 1,
@@ -58,10 +59,11 @@ while ( 1 ) {
 		onMouseMove => sub {
 			my ( $self, $mod, $x, $y) = @_;
 			return unless $self->{anc};
-			$self-> origin(
+			@origin = (
 				$self->left   + $x - $self->{anc}->[0],
 				$self->bottom + $y - $self->{anc}->[1],
 			);
+			$self-> origin(@origin);
 		},
 		onMouseUp => sub {
 			my ( $self, $btn, $mod, $x, $y) = @_;
