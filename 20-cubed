@@ -51,13 +51,32 @@ while ( 1 ) {
 			$t->put_image( 0, 0, $gradient_mask, rop::AlphaCopy );
 		},
 		onMouseDown => sub {
+			my ( $self, $btn, $mod, $x, $y) = @_;
+			$self->{anc} = [ $x, $y ];
+			$self-> capture(1);
+		},
+		onMouseMove => sub {
+			my ( $self, $mod, $x, $y) = @_;
+			return unless $self->{anc};
+			$self-> origin(
+				$self->left   + $x - $self->{anc}->[0],
+				$self->bottom + $y - $self->{anc}->[1],
+			);
+		},
+		onMouseUp => sub {
+			my ( $self, $btn, $mod, $x, $y) = @_;
+			$self-> capture(0);
+			delete $self->{anc};
+		},
+		onMouseClick => sub {
 			$t-> destroy;
 			$sec = 0;
 		},
 	);
 	$t-> insert( Timer => 
 		timeout => 1000,
-		onTick  => sub {	
+		onTick  => sub {
+			return if $t->{anc};
 			--$sec ? $t->repaint : $t->destroy;
 		},
 	)->start;
